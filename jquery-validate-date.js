@@ -100,6 +100,51 @@ $(document).ready(function () {
     });
     $("input[data-date-start]").datepicker();
     $("input[data-date-end]").datepicker();
+
+    
+    jQuery.validator.addMethod("ranged", function (value, element) {
+        var dateEnd = toDate(value);
+        var dateStart = dateEnd;
+        //Check for end date attr
+        var linker = element.getAttribute('data-end-date');
+        if (linker == null) {
+            //Check for start end attr
+            linker = element.getAttribute('data-start-date');
+            if (linker == null) {
+                return true;
+            } else {
+                //Handle start date attr
+                $('input[data-end-date]').each(function () {
+                    if ($(this).attr('data-end-date') == linker) {
+                        dateEnd = toDate($(this).val());
+                    }
+                });
+                if (dateStart > dateEnd) {
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        } else {
+            //Handle end date attr
+            $('input[data-start-date]').each(function () {
+                if ($(this).attr('data-start-date') == linker) {
+                    dateStart = toDate($(this).val());
+                }
+            });
+            if (dateStart > dateEnd) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+    }, "Please enter a valid date range.");
+    $( 'input[data-date-start]' ).rules( 'add', {
+        ranged: true,
+    });
+    $( 'input[data-date-end]' ).rules( 'add', {
+        ranged: true,
+    });
     //
     //End Check start/end dates
     //
