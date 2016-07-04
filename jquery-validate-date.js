@@ -3,9 +3,11 @@
 //
 // Validates a start date and an end date in a set of two dates
 //
-// Example usage:
+// Example usages:
 // <input name="startDate1" data-start-date="1">
 // <input name="endDate1" data-end-date="1">
+// <input name="futureDate" data-future-date>
+// <input name="pastDate" data-past-date>
 //
 // Dependencies:
 // jQuery - https://jquery.com/
@@ -65,15 +67,13 @@ $(document).ready(function () {
             }
         }
     }, "Please enter a valid date range.");
-    jQuery.validator.addClassRules({
-        dateSelect: {
-            ranged: true
-        },
-        date: {
-            ranged: true
-        }
+    $("[data-start-date]").rules( "add", {
+        ranged: true
     });
-    //Validate when date range is changed
+    $("[data-end-date]").rules( "add", {
+        ranged: true
+    });
+    //Validate start/end date when date range is changed
     $('body').on('change blur', 'input[data-start-date]', function () {
         var dateEnd = "Invalid Date";
         var linker = $(this).attr('data-start-date');
@@ -106,6 +106,33 @@ $(document).ready(function () {
             $(this).valid();
         }
     });
+
+    //Validate past/future dates
+    jQuery.validator.addMethod("past", function (value, element) {
+        var now = new Date();
+        var date = toDate($(element).val());
+        if (date > now) {
+            return false;
+        } else {
+            return true;
+        }
+    }, "Please enter a valid past date.");
+        jQuery.validator.addMethod("future", function (value, element) {
+        var now = new Date();
+        var date = toDate($(element).val());
+        if (date < now) {
+            return false;
+        } else {
+            return true;
+        }
+    }, "Please enter a valid future range.");
+    $("[data-past-date]").rules( "add", {
+        past: true
+    });
+    $("[data-future-date]").rules( "add", {
+        future: true
+    });
+
 });
 
 //Convert date
