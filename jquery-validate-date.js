@@ -15,7 +15,7 @@
 //
 // Options
 var splitter = "/";     //Change date splitter accordingly, example: / or -
-var format = "US";      //"US" for MM/DD/YYYY, "EU" for DD/MM/YYYY
+var format = "M";       //"M" for middle-endian MM/DD/YYYY, "L" for little-endian DD/MM/YYYY, "B" for big-endian YYYY/MM/DD
 //
 
 
@@ -67,10 +67,10 @@ $(document).ready(function () {
             }
         }
     }, "Please enter a valid date range.");
-    $("[data-start-date]").rules( "add", {
+    $("input[data-start-date]").rules( "add", {
         ranged: true
     });
-    $("[data-end-date]").rules( "add", {
+    $("input[data-end-date]").rules( "add", {
         ranged: true
     });
     //Validate start/end date when date range is changed
@@ -125,11 +125,11 @@ $(document).ready(function () {
         } else {
             return true;
         }
-    }, "Please enter a valid future range.");
-    $("[data-past-date]").rules( "add", {
+    }, "Please enter a valid future date.");
+    $("input[data-past-date]").rules( "add", {
         past: true
     });
-    $("[data-future-date]").rules( "add", {
+    $("input[data-future-date]").rules( "add", {
         future: true
     });
 
@@ -138,10 +138,12 @@ $(document).ready(function () {
 //Convert date
 function toDate(dateStr) {
     var parts = dateStr.split(splitter);
-    if (format = "US") {
+    if (format = "M") {
         return new Date(parts[2], parts[0] - 1, parts[1]);
-    } else if (format = "EU") {
+    } else if (format = "L") {
         return new Date(parts[2], parts[1] - 1, parts[0]);
+    } else if (format = "B") {
+        return new Date(parts[0], parts[1] - 1, parts[2]);
     } else {
         return null;
     }
