@@ -2,6 +2,7 @@
 // jquery-validate-date
 //
 // Validates a start date and an end date in a set of two dates
+// Validates that a date is in the past or future
 //
 // Example usages:
 // <input name="startDate1" data-start-date="1">
@@ -20,7 +21,8 @@ var format = "M";       //"M" for middle-endian MM/DD/YYYY, "L" for little-endia
 
 
 $(document).ready(function () {
-    //Start/End date validation
+
+    //Validate start/end dates
     jQuery.validator.addMethod("ranged", function (value, element) {
         var dateEnd = toDate(value);
         var dateStart = dateEnd;
@@ -73,8 +75,9 @@ $(document).ready(function () {
     $("input[data-end-date]").rules( "add", {
         ranged: true
     });
+    
     //Validate start/end date when date range is changed
-    $('body').on('change blur', 'input[data-start-date]', function () {
+    $('body').on('change keyup', 'input[data-start-date]', function () {
         var dateEnd = "Invalid Date";
         var linker = $(this).attr('data-start-date');
         $('input[data-end-date]').each(function () {
@@ -90,7 +93,7 @@ $(document).ready(function () {
             $(this).valid();
         }
     });
-    $('body').on('change blur', 'input[data-end-date]', function () {
+    $('body').on('change keyup', 'input[data-end-date]', function () {
         var dateStart = "Invalid Date";
         var linker = $(this).attr('data-end-date');
         $('input[data-start-date]').each(function () {
@@ -107,9 +110,10 @@ $(document).ready(function () {
         }
     });
 
-    //Validate past/future dates
-    jQuery.validator.addMethod("past", function (value, element) {
-        var now = new Date();
+    //Validate past date
+    //Valid if a date is in the past or is the current date
+    jQuery.validator.addMethod("inPast", function (value, element) {
+        var now = (new Date()).setHours(0,0,0,0);
         var date = toDate($(element).val());
         if (date > now) {
             return false;
@@ -117,8 +121,14 @@ $(document).ready(function () {
             return true;
         }
     }, "Please enter a valid past date.");
-        jQuery.validator.addMethod("future", function (value, element) {
-        var now = new Date();
+    $("input[data-past-date]").rules( "add", {
+        inPast: true
+    });
+
+    //Validate future date
+    //Valid if a date is in the future or is the current date
+    jQuery.validator.addMethod("inFuture", function (value, element) {
+        var now = (new Date()).setHours(0,0,0,0);
         var date = toDate($(element).val());
         if (date < now) {
             return false;
@@ -126,11 +136,20 @@ $(document).ready(function () {
             return true;
         }
     }, "Please enter a valid future date.");
-    $("input[data-past-date]").rules( "add", {
-        past: true
-    });
     $("input[data-future-date]").rules( "add", {
-        future: true
+        inFuture: true
+    });
+
+    //Validate past/future date when changed
+    $('body').on('change keyup', 'input[data-future-date]', function () {
+        if (toDate($(this).val()) != "Invalid Date") {
+            $(this).valid();
+        }
+    });
+    $('body').on('change keyup', 'input[data-end-date]', function () {
+        if (toDate($(this).val()) != "Invalid Date") {
+            $(this).valid();
+        }
     });
 
 });
