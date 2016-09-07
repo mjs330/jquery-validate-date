@@ -14,11 +14,20 @@
 // jQuery - https://jquery.com/
 // jQuery Validation Plugin - https://jqueryvalidation.org/
 //
-// Options
-var dateSplitter = "/";     //Change date dateSplitter accordingly, example: / or -
-var dateFormat = "M";       //"M" for middle-endian MM/DD/YYYY, "L" for little-endian DD/MM/YYYY, "B" for big-endian YYYY/MM/DD
-var allowToday = true;      //Change to allow or disallow the current date when checking for past and future dates
+
+
 //
+// Options
+//
+
+//Change date splitter according to what's being used. Example: "/" or "-"
+var dateSplitter = "/";     
+
+//"M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
+var dateFormat = "M";   
+
+//Change to allow or disallow the current date when checking for past and future dates    
+var allowToday = true;      
 
 
 $(document).ready(function () {
@@ -116,7 +125,6 @@ $(document).ready(function () {
     });
 
     //Validate past date
-    //Valid if a date is in the past or is the current date
     jQuery.validator.addMethod("inPast", function (value, element) {
         var now = (new Date()).setHours(0,0,0,0);
         var date = (toDate($(element).val())).setHours(0,0,0,0);
@@ -133,7 +141,6 @@ $(document).ready(function () {
     });
 
     //Validate future date
-    //Valid if a date is in the future or is the current date
     jQuery.validator.addMethod("inFuture", function (value, element) {
         var now = (new Date()).setHours(0,0,0,0);
         var date = (toDate($(element).val())).setHours(0,0,0,0);
