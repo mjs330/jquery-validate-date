@@ -6,14 +6,14 @@
 // Validates whether or not a date is the current date
 //
 // Example uses:
-// <input name="startDate1" data-start-date="1">
-// <input name="endDate1" data-end-date="1">
-// <input name="futureDate" data-future-date>
-// <input name="pastDate" data-past-date>
-// <input name="currentDate" data-current-date>
+// <input id="Start_Date_1" data-start-date="1">
+// <input id="End_Date_1" data-end-date="1">
+// <input id="Future_Date" data-future-date>
+// <input id="Past_Date" data-past-date>
+// <input id="Current_Date" data-current-date>
 //
 // Example combination uses:
-// <input name="currentOrPastDate" data-current-date data-past-date>
+// <input id="Current_Or_Past_Date" data-current-date data-past-date>
 //
 // Dependencies:
 // jQuery - https://jquery.com/
@@ -125,18 +125,23 @@ $(document).ready(function () {
     });
 
     //Validate current date
-    jQuery.validator.addMethod("current", function (value, element) {
-        var date = (toDate($(element).val())).setHours(0,0,0,0);
-        var now = (new Date()).setHours(0,0,0,0);
-        if ((date == now) || ($(element).attr('data-past-date') != undefined) || ($(element).attr('data-future-date') != undefined)) {
+    jQuery.validator.addMethod("isCurrent", function (value, element) {
+        if ( ($(element).attr('data-past-date') != undefined) || ($(element).attr('data-future-date') != undefined) ) {
             return true;
         } else {
-            return false;
+            var date = (toDate($(element).val())).setHours(0,0,0,0);
+            var now = (new Date()).setHours(0,0,0,0);
+            if (date == now) {
+                return true;
+            } else {
+                return false;
+            }
         }
+
     }, "Please enter a valid current date.");
     $("input[data-current-date]").each(function(){
         $(this).rules( "add", {
-            current: true
+            isCurrent: true
         });
     });
 

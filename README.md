@@ -1,0 +1,19 @@
+# jquery-validate-date
+
+ Validates a start date and an end date in a set of two dates
+ Validates that a date is in the past or future
+ Validates whether or not a date is the current date
+
+Example uses:
+* <input id="Start_Date_1" data-start-date="1">
+* <input id="End_Date_1" data-end-date="1">
+* <input id="Future_Date" data-future-date>
+* <input id="Past_Date" data-past-date>
+* <input id="Current_Date" data-current-date>
+
+Example combination uses:
+* <input id="Current_Or_Past_Date" data-current-date data-past-date>
+
+Dependencies:
+* [jQuery](https://jquery.com/)
+* [jQuery Validation Plugin](https://jqueryvalidation.org/)
