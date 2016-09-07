@@ -3,12 +3,17 @@
 //
 // Validates a start date and an end date in a set of two dates
 // Validates that a date is in the past or future
+// Validates whether or not a date is the current date
 //
-// Example usages:
+// Example uses:
 // <input name="startDate1" data-start-date="1">
 // <input name="endDate1" data-end-date="1">
 // <input name="futureDate" data-future-date>
 // <input name="pastDate" data-past-date>
+// <input name="currentDate" data-current-date>
+//
+// Example combination uses:
+// <input name="currentOrPastDate" data-current-date data-past-date>
 //
 // Dependencies:
 // jQuery - https://jquery.com/
@@ -24,10 +29,7 @@
 var dateSplitter = "/";     
 
 //"M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
-var dateFormat = "M";   
-
-//Change to allow or disallow the current date when checking for past and future dates    
-var allowToday = true;      
+var dateFormat = "M";      
 
 
 $(document).ready(function () {
@@ -100,7 +102,6 @@ $(document).ready(function () {
                 if (dateEnd != "Invalid Date") {
                     $(this).valid();
                 }
-
             }
         });
         if (dateEnd != "Invalid Date") {
@@ -116,7 +117,6 @@ $(document).ready(function () {
                 if (dateStart != "Invalid Date") {
                     $(this).valid();
                 }
-
             }
         });
         if (dateStart != "Invalid Date") {
@@ -124,11 +124,27 @@ $(document).ready(function () {
         }
     });
 
+    //Validate current date
+    jQuery.validator.addMethod("current", function (value, element) {
+        var date = (toDate($(element).val())).setHours(0,0,0,0);
+        var now = (new Date()).setHours(0,0,0,0);
+        if ((date == now) || ($(element).attr('data-past-date') != undefined) || ($(element).attr('data-future-date') != undefined)) {
+            return true;
+        } else {
+            return false;
+        }
+    }, "Please enter a valid current date.");
+    $("input[data-current-date]").each(function(){
+        $(this).rules( "add", {
+            current: true
+        });
+    });
+
     //Validate past date
     jQuery.validator.addMethod("inPast", function (value, element) {
         var now = (new Date()).setHours(0,0,0,0);
         var date = (toDate($(element).val())).setHours(0,0,0,0);
-        if ( ((date == now) && (allowToday == true)) || (date < now) ) {
+        if ( ((date == now) && ($(element).attr('data-current-date') != undefined)) || (date < now) ) {
             return true;
         } else {
             return false;
@@ -144,7 +160,7 @@ $(document).ready(function () {
     jQuery.validator.addMethod("inFuture", function (value, element) {
         var now = (new Date()).setHours(0,0,0,0);
         var date = (toDate($(element).val())).setHours(0,0,0,0);
-        if ( ((date == now) && (allowToday == true)) || (date > now) ) {
+        if ( ((date == now) && ($(element).attr('data-current-date') != undefined)) || (date > now) ) {
             return true;
         } else {
             return false;
