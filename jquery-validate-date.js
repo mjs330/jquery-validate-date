@@ -15,8 +15,9 @@
 // jQuery Validation Plugin - https://jqueryvalidation.org/
 //
 // Options
-var splitter = "/";     //Change date splitter accordingly, example: / or -
-var format = "M";       //"M" for middle-endian MM/DD/YYYY, "L" for little-endian DD/MM/YYYY, "B" for big-endian YYYY/MM/DD
+var dateSplitter = "/";     //Change date dateSplitter accordingly, example: / or -
+var dateFormat = "M";       //"M" for middle-endian MM/DD/YYYY, "L" for little-endian DD/MM/YYYY, "B" for big-endian YYYY/MM/DD
+var allowToday = true;      //Change to allow or disallow the current date when checking for past and future dates
 //
 
 
@@ -69,11 +70,15 @@ $(document).ready(function () {
             }
         }
     }, "Please enter a valid date range.");
-    $("input[data-start-date]").rules( "add", {
-        ranged: true
+    $("input[data-start-date]").each(function(){
+        $(this).rules( "add", {
+            ranged: true
+        });
     });
-    $("input[data-end-date]").rules( "add", {
-        ranged: true
+    $("input[data-end-date]").each(function(){
+            $(this).rules( "add", {
+            ranged: true
+        });
     });
     
     //Validate start/end date when date range is changed
@@ -114,30 +119,34 @@ $(document).ready(function () {
     //Valid if a date is in the past or is the current date
     jQuery.validator.addMethod("inPast", function (value, element) {
         var now = (new Date()).setHours(0,0,0,0);
-        var date = toDate($(element).val());
-        if (date > now) {
-            return false;
-        } else {
+        var date = (toDate($(element).val())).setHours(0,0,0,0);
+        if ( ((date == now) && (allowToday == true)) || (date < now) ) {
             return true;
+        } else {
+            return false;
         }
     }, "Please enter a valid past date.");
-    $("input[data-past-date]").rules( "add", {
-        inPast: true
+    $("input[data-past-date]").each(function(){
+        $(this).rules( "add", {
+            inPast: true
+        });
     });
 
     //Validate future date
     //Valid if a date is in the future or is the current date
     jQuery.validator.addMethod("inFuture", function (value, element) {
         var now = (new Date()).setHours(0,0,0,0);
-        var date = toDate($(element).val());
-        if (date < now) {
-            return false;
-        } else {
+        var date = (toDate($(element).val())).setHours(0,0,0,0);
+        if ( ((date == now) && (allowToday == true)) || (date > now) ) {
             return true;
+        } else {
+            return false;
         }
     }, "Please enter a valid future date.");
-    $("input[data-future-date]").rules( "add", {
-        inFuture: true
+    $("input[data-future-date]").each(function(){
+        $(this).rules( "add", {
+            inFuture: true
+        });
     });
 
     //Validate past/future date when changed
@@ -156,12 +165,12 @@ $(document).ready(function () {
 
 //Convert date
 function toDate(dateStr) {
-    var parts = dateStr.split(splitter);
-    if (format = "M") {
+    var parts = dateStr.split(dateSplitter);
+    if (dateFormat = "M") {
         return new Date(parts[2], parts[0] - 1, parts[1]);
-    } else if (format = "L") {
+    } else if (dateFormat = "L") {
         return new Date(parts[2], parts[1] - 1, parts[0]);
-    } else if (format = "B") {
+    } else if (dateFormat = "B") {
         return new Date(parts[0], parts[1] - 1, parts[2]);
     } else {
         return null;
