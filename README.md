@@ -14,8 +14,8 @@
 
 #### Example uses:
 ```html
-<input id="Start_Date_1" data-start-date="1">
-<input id="End_Date_1" data-end-date="1">
+<input id="Start_Date" data-start-date="1">
+<input id="End_Date" data-end-date="1">
 <input id="Future_Date" data-future-date>
 <input id="Past_Date" data-past-date>
 <input id="Current_Date" data-current-date>
@@ -26,4 +26,5 @@
 #### Example combination uses:
 ```html
 <input id="Current_Or_Past_Date" data-current-date data-past-date>
+<input id="Start_Date_Current_Or_Future" data-current-date data-future-date data-start-date="1">
 ```
