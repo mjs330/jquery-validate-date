@@ -24,9 +24,7 @@
 //
 // Options
 //
-
-//Change date splitter according to what's being used. Example: "/" or "-"
-var dateSplitter = "/";     
+  
 
 //"M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
 var dateFormat = "M";      
@@ -193,6 +191,16 @@ $(document).ready(function () {
 
 //Convert date
 function toDate(dateStr) {
+    var dateSplitter = "";
+    if ($(dateStr).contains("-")) {
+        dateSplitter = "-";
+    } else if ($(dateStr).contains("*")) {
+        dateSplitter = "*";
+    } else if ($(dateStr).contains("/")) {
+        dateSplitter = "/";
+    } else {
+        return "Invalid Date";
+    }
     var parts = dateStr.split(dateSplitter);
     if (dateFormat = "M") {
         return new Date(parts[2], parts[0] - 1, parts[1]);
@@ -201,6 +209,6 @@ function toDate(dateStr) {
     } else if (dateFormat = "B") {
         return new Date(parts[0], parts[1] - 1, parts[2]);
     } else {
-        return null;
+        return "Invalid Date";
     }
 }
