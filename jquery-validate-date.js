@@ -24,9 +24,8 @@
 //
 // Options
 //
-  
-
-//"M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
+// "M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
+//
 var dateFormat = "M";      
 
 
