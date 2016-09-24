@@ -14,7 +14,7 @@
 
 #### Options:
 * Change the dateFormat variable in jquery-validate-date.js to set the format of the dates you'd like validated
-* The dateFormat variable accepts: "M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
+* The dateFormat variable accepts: "M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, and "B" for big-endian date YYYY/MM/DD
 
 --
 
