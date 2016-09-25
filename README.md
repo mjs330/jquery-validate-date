@@ -27,6 +27,7 @@ The date splitter used in both the format() method and in the dates being verifi
 #### Example uses:
 ```html
 <!--Validate a date range-->
+<!--Use the same value in data-start-date and data-end-date to link the inputs-->
 <input id="Start_Date" data-start-date="123">
 <input id="End_Date" data-end-date="123">
 
@@ -48,7 +49,7 @@ The date splitter used in both the format() method and in the dates being verifi
 <input id="Current_Or_Past_Date" data-current-date data-past-date>
 
 <!--Validate that a start date in a date range is either the current date or in the future-->
+<!--Validate that the end date in the same date range is in the future-->
 <input id="Current_Or_Future_Start_Date" data-current-date data-future-date data-start-date="456">
-<!--Validate that the end date in a date range is in the future-->
 <input id="Future_End_Date" data-future-date data-start-date="456">
 ```
