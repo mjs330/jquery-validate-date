@@ -26,8 +26,62 @@
 //
 // "M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
 //
-var dateFormat = "M";      
+var dateFormat = "M";
 
+
+// jvdate object
+var jvdate = {
+    format: function(format) {
+        if (format == "M" || format == "L" || format == "B") { 
+            dateFormat = format;
+        } else if ($(format).contains("MM") && $(format).contains("DD") && $(format).contains("YYYY") 
+            && ($(format).contains("/") || $(format).contains("-") || $(format).contains("*"))) {
+            var dateSplitter = findSplitter(format);
+            switch(format) {
+                case "MM" + dateSplitter + "DD" + dateSplitter + "YYYY":
+                    dateFormat = "M";
+                    break;
+                case "DD" + dateSplitter + "MM" + dateSplitter + "YYYY":
+                    dateFormat = "M";
+                    break;
+                case "YYYY" + dateSplitter + "MM" + dateSplitter + "DD":
+                    dateFormat = "B";
+                    break; 
+            }
+        }
+    }
+};
+
+//Find splitter
+function findSplitter(dateStr) {
+    if ($(dateStr).contains("-") && !($(dateStr).contains("/")) && !($(dateStr).contains("*"))) {
+        return "-";
+    } else if ($(dateStr).contains("*") && !($(dateStr).contains("/")) && !($(dateStr).contains("-"))) {
+        return "*";
+    } else if ($(dateStr).contains("/") && !($(dateStr).contains("-")) && !($(dateStr).contains("*"))) {
+        return "/";
+    } else {
+        return "";
+    }
+}
+
+//Convert date
+function toDate(dateStr) {
+    var dateSplitter = findSplitter(dateStr);
+    if (dateSplitter == "") {
+        return "Invalid Date";
+    }
+    var parts = dateStr.split(dateSplitter);
+    if (dateFormat = "M") {
+        return new Date(parts[2], parts[0] - 1, parts[1]);
+    } else if (dateFormat = "L") {
+        return new Date(parts[2], parts[1] - 1, parts[0]);
+    } else if (dateFormat = "B") {
+        return new Date(parts[0], parts[1] - 1, parts[2]);
+    } else {
+        return "Invalid Date";
+    }
+}     
 
 $(document).ready(function () {
 
@@ -187,27 +241,3 @@ $(document).ready(function () {
     });
 
 });
-
-//Convert date
-function toDate(dateStr) {
-    var dateSplitter = "";
-    if ($(dateStr).contains("-")) {
-        dateSplitter = "-";
-    } else if ($(dateStr).contains("*")) {
-        dateSplitter = "*";
-    } else if ($(dateStr).contains("/")) {
-        dateSplitter = "/";
-    } else {
-        return "Invalid Date";
-    }
-    var parts = dateStr.split(dateSplitter);
-    if (dateFormat = "M") {
-        return new Date(parts[2], parts[0] - 1, parts[1]);
-    } else if (dateFormat = "L") {
-        return new Date(parts[2], parts[1] - 1, parts[0]);
-    } else if (dateFormat = "B") {
-        return new Date(parts[0], parts[1] - 1, parts[2]);
-    } else {
-        return "Invalid Date";
-    }
-}

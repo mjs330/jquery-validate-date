@@ -1,5 +1,5 @@
 # jquery-validate-date
-
+jquery-validate-date is a lightweight library that:
  * Validates a start date and an end date in a set of two dates
  * Validates that a date is in the past or future
  * Validates whether or not a date is the current date
@@ -13,17 +13,30 @@
 --
 
 #### Options:
-* Change the dateFormat variable in jquery-validate-date.js to set the format of the dates you'd like validated
-* The dateFormat variable accepts: "M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, and "B" for big-endian date YYYY/MM/DD
+Set the format of the dates you'd like to verify like this:
+```javascript
+var myJvdate = new jvdate();
+myJvdate.format("MM/DD/YYYY")
+```
+The format() method accepts: "M" or "MM/DD/YYYY "for middle-endian dates, "L" or "DD/MM/YYYY" for little-endian dates, and "B" or "YYYY/MM/DD" for big-endian dates.
+
+The date splitter used in both the format() method and in the dates being verified can be /, -, or \*. For example, "MM\*DD\*YYYY" is an acceptable format() and "01\*02\*2000" is an acceptable date.
 
 --
 
 #### Example uses:
 ```html
+<!--Validate a date range-->
 <input id="Start_Date" data-start-date="123">
 <input id="End_Date" data-end-date="123">
+
+<!--Validate that a date is in the future-->
 <input id="Future_Date" data-future-date>
+
+<!--Validate that a date is in the past-->
 <input id="Past_Date" data-past-date>
+
+<!--Validate that a date is the current date-->
 <input id="Current_Date" data-current-date>
 ```
 
@@ -31,7 +44,11 @@
 
 #### Example combination uses:
 ```html
+<!--Validate that a date is either the current date or in the past-->
 <input id="Current_Or_Past_Date" data-current-date data-past-date>
+
+<!--Validate that a start date in a date range is either the current date or in the future-->
 <input id="Current_Or_Future_Start_Date" data-current-date data-future-date data-start-date="456">
+<!--Validate that the end date in a date range is in the future-->
 <input id="Future_End_Date" data-future-date data-start-date="456">
 ```
