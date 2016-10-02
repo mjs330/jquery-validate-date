@@ -43,11 +43,11 @@ The date splitter used in both the format() method and in the dates being verifi
 
 
 <!--Validate that a date is at or after a minimum date-->
-<!--Use the value in data-start-date to set the minimum date-->
+<!--Use the value in data-min-date to set the minimum date-->
 <input id="After_Or_At_Min_Date" data-min-date="01/01/2000">
 
 <!--Validate that a date is at or before a maximum date-->
-<!--Use the value in data-start-date to set the maximum date-->
+<!--Use the value in data-max-date to set the maximum date-->
 <input id="Before_Or_At_Max_Date" data-max-date="01/01/2025">
 ```
 
