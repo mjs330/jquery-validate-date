@@ -17,11 +17,18 @@ jquery-validate-date is a lightweight library that:
 Set the format of the dates you'd like to verify like this:
 ```javascript
 var myJvdate = new jvdate();
-myJvdate.format("MM/DD/YYYY")
+myJvdate.format("MM/DD/YYYY");
 ```
 The format() method accepts: "M" or "MM/DD/YYYY "for middle-endian dates, "L" or "DD/MM/YYYY" for little-endian dates, and "B" or "YYYY/MM/DD" for big-endian dates.
 
 The date splitter used in both the format() method and in the dates being verified can be /, -, or \*. For example, "MM\*DD\*YYYY" is an acceptable format() and "01\*02\*2000" is an acceptable date.
+
+--
+
+If you need to rebind the validators for things such as dynamically cloned elements, you can do so like this:
+```javascript
+myJvdate.rebind();
+```
 
 --
 

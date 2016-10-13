@@ -62,6 +62,9 @@ var jvdate = {
                     break; 
             }
         }
+    },
+    rebind: function() {
+        jvBind();
     }
 };
 
@@ -100,7 +103,9 @@ function toDate(dateStr) {
 // var maxDate = "";
 // var minDate = "";
 
-$(document).ready(function () {
+
+// Bind validators
+function jvBind() {
 
     //Validate start/end dates
     jQuery.validator.addMethod("ranged", function (value, element) {
@@ -303,4 +308,9 @@ $(document).ready(function () {
         });
     });
 
+}
+
+
+$(document).ready(function () {
+    jvBind();
 });
