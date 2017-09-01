@@ -1,5 +1,5 @@
-# jquery-validate-date
-jquery-validate-date is a lightweight library that uses HTML5 data attributes to:
+# jquery.validate.date
+jquery.validate.date is a lightweight library that uses HTML5 data attributes to:
  * Validate a start date and an end date in a set of two dates
  * Validate that a date is in the past or future
  * Validate whether or not a date is the current date

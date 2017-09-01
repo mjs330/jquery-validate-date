@@ -1,5 +1,5 @@
 //
-// jquery-validate-date
+// jquery.validate.date
 //
 // Validates a start date and an end date in a set of two dates
 // Validates that a date is in the past or future
