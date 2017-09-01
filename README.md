@@ -25,7 +25,7 @@ The date splitter used in both the format() method and in the dates being verifi
 
 --
 
-If you need to rebind the validators for things such as dynamically cloned elements, you can do so like this:
+The validators are automatically bound by default. If you need to rebind the validators for things such as dynamically cloned elements, you can do so like this:
 ```javascript
 myJvdate.rebind();
 ```
