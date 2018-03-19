@@ -13,22 +13,27 @@ jquery.validate.date is a lightweight library that uses HTML5 data attributes to
 
 --
 
-#### Options:
-Set the format of the dates you'd like to verify like this:
+#### Setup:
+The date validators are not automatically bound by default. After the jQuery Validation plugin is initialized by any means, you can bind the date validators by using the following. You can also use this on the fly to rebind the validators for things such as dynamically cloned elements.
 ```javascript
-var myJvdate = new jvdate();
-myJvdate.format("MM/DD/YYYY");
+jvdate.bind();
 ```
-The format() method accepts: "M" or "MM/DD/YYYY "for middle-endian dates, "L" or "DD/MM/YYYY" for little-endian dates, and "B" or "YYYY/MM/DD" for big-endian dates.
 
-The date splitter used in both the format() method and in the dates being verified can be /, -, or \*. For example, "MM\*DD\*YYYY" is an acceptable format() and "01\*02\*2000" is an acceptable date.
+This plugin assumes by default that you are going to be using your own initialization of the jQuery Validation plugin. However, if you would like to perform a generic initialization, you can do so with the following. This will also bind the date validators.
+```javascript
+jvdate.initvalidator();
+```
 
 --
 
-The validators are automatically bound by default. If you need to rebind the validators for things such as dynamically cloned elements, you can do so like this:
+#### Options:
+Set the format of the dates you'd like to verify like this.
 ```javascript
-myJvdate.rebind();
+jvdate.format("MM/DD/YYYY");
 ```
+The format() method accepts: "M" or "MM/DD/YYYY "for middle-endian dates, "L" or "DD/MM/YYYY" for little-endian dates, and "B" or "YYYY/MM/DD" for big-endian dates. "M" is the default.
+
+The date splitter used in both the format() method and in the dates being verified can be /, -, or \*. For example, "MM\*DD\*YYYY" is an acceptable format() and "01\*02\*2000" is an acceptable date.
 
 --
 
