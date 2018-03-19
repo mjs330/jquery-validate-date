@@ -21,84 +21,83 @@
 //
 
 
-//
-// Options
-//
-// "M" for middle-endian date MM/DD/YYYY, "L" for little-endian date DD/MM/YYYY, "B" for big-endian date YYYY/MM/DD
-//
-var jvdDateFormat = "M";
-//
-
-
 
 
 // jvdate object
 var jvdate = {
-    format: function(format) {
-        if (format == "M" || format == "L" || format == "B") { 
-            jvdDateFormat = format;
-        } else if ($(format).contains("MM") && $(format).contains("DD") && $(format).contains("YYYY") 
-            && ($(format).contains("/") || $(format).contains("-") || $(format).contains("*"))) {
-            var dateSplitter = jvdFindSplitter(format);
-            switch(format) {
-                case "MM" + dateSplitter + "DD" + dateSplitter + "YYYY":
-                    jvdDateFormat = "M";
-                    break;
-                case "DD" + dateSplitter + "MM" + dateSplitter + "YYYY":
-                    jvdDateFormat = "M";
-                    break;
-                case "YYYY" + dateSplitter + "MM" + dateSplitter + "DD":
-                    jvdDateFormat = "B";
-                    break; 
-            }
+    dateformat: "M"
+};
+
+jvdate.initvalidator = function() {
+        $.validate();
+        this.bind();
+}
+
+jvdate.format = function (format) {
+    if (format == null || format == "") {
+        return;
+    } else if (format == "M" || format == "L" || format == "B") { 
+        jvdate.dateformat = format;
+    } else if (format.indexOf("MM") > -1 && format.indexOf("DD") > -1 && format.indexOf("YYYY") > -1
+        && (format.indexOf("/") > -1 || format.indexOf("-") > -1 || format.indexOf("*") > -1)) {
+        var dateSplitter = jvdate.findsplitter(format);
+        switch(format) {
+            case "MM" + dateSplitter + "DD" + dateSplitter + "YYYY":
+                jvdate.dateformat = "M";
+                break;
+            case "DD" + dateSplitter + "MM" + dateSplitter + "YYYY":
+                jvdate.dateformat = "M";
+                break;
+            case "YYYY" + dateSplitter + "MM" + dateSplitter + "DD":
+                jvdate.dateformat = "B";
+                break; 
         }
-    },
-    rebind: function() {
-        jvdBind();
-    },
-    bind: function() {
-        jvdBind();
     }
 };
 
-//Find splitter
-function jvdFindSplitter(dateStr) {
-    if ($(dateStr).contains("-") && !($(dateStr).contains("/")) && !($(dateStr).contains("*"))) {
-        return "-";
-    } else if ($(dateStr).contains("*") && !($(dateStr).contains("/")) && !($(dateStr).contains("-"))) {
-        return "*";
-    } else if ($(dateStr).contains("/") && !($(dateStr).contains("-")) && !($(dateStr).contains("*"))) {
-        return "/";
-    } else {jvdToDate
-        return "";
-    }
-}
+jvdate.setformat = function (format) {
+    jvdate.format(format);
+};
 
-//Convert date
-function jvdToDate(dateStr) {
-    var dateSplitter = jvdFindSplitter(dateStr);
+jvdate.todate = function(dateStr) {
+    var dateSplitter = jvdate.findsplitter(dateStr);
     if (dateSplitter == "") {
         return "Invalid Date";
     }
     var parts = dateStr.split(dateSplitter);
-    if (jvdDateFormat = "M") {
+    if (jvdate.dateformat = "M") {
         return (new Date(parts[2], parts[0] - 1, parts[1])).setHours(0,0,0,0);
-    } else if (jvdDateFormat = "L") {
+    } else if (jvdate.dateformat = "L") {
         return (new Date(parts[2], parts[1] - 1, parts[0])).setHours(0,0,0,0);
-    } else if (jvdDateFormat = "B") {
+    } else if (jvdate.dateformat = "B") {
         return (new Date(parts[0], parts[1] - 1, parts[2])).setHours(0,0,0,0);
     } else {
         return "Invalid Date";
     }
-}     
+};
 
+jvdate.findsplitter = function (dateStr) {
+    if (dateStr == null || dateStr == "") {
+        return "";
+    } else if (dateStr.indexOf("-") > -1 && !(dateStr.indexOf("/") > -1) && !(dateStr.indexOf("*") > -1)) {
+        return "-";
+    } else if (dateStr.indexOf("*") > -1 && !(dateStr.indexOf("/") > -1) && !(dateStr.indexOf("-") > -1)) {
+        return "*";
+    } else if (dateStr.indexOf("/") > -1 && !(dateStr.indexOf("-") > -1) && !(dateStr.indexOf("*") > -1)) {
+        return "/";
+    } else {
+        return "";
+    }
+};
 
-// Bind validators
-function jvdBind() {
+jvdate.rebind = function() {
+    this.bind();
+};
 
+jvdate.bind = function () {
     //Validate start/end dates
     jQuery.validator.addMethod("ranged", function (value, element) {
-        var dateEnd = jvdToDate(value);
+        var dateEnd = jvdate.todate(value);
         var dateStart = dateEnd;
         var linked = null;
         //Check for end date attr
@@ -112,7 +111,7 @@ function jvdBind() {
                 //Handle start date attr
                 $('input[data-end-date]').each(function () {
                     if ($(this).attr('data-end-date') == linker) {
-                        dateEnd = jvdToDate($(this).val());
+                        dateEnd = jvdate.todate($(this).val());
                         linked = this;
                     }
                 });
@@ -129,7 +128,7 @@ function jvdBind() {
             //Handle end date attr
             $('input[data-start-date]').each(function () {
                 if ($(this).attr('data-start-date') == linker) {
-                    dateStart = jvdToDate($(this).val());
+                    dateStart = jvdate.todate($(this).val());
                     linked = this;
                 }
             });
@@ -143,24 +142,24 @@ function jvdBind() {
             }
         }
     }, "Please enter a valid date range.");
-    $("input[data-start-date]").each(function(){
-        $(this).rules( "add", {
+    $("input[data-start-date]").each(function () {
+        $(this).rules("add", {
             ranged: true
         });
     });
-    $("input[data-end-date]").each(function(){
-            $(this).rules( "add", {
+    $("input[data-end-date]").each(function () {
+        $(this).rules("add", {
             ranged: true
         });
     });
-    
+
     //Validate start/end date when date range is changed
     $('body').on('change keyup', 'input[data-start-date]', function () {
         var dateEnd = "Invalid Date";
         var linker = $(this).attr('data-start-date');
         $('input[data-end-date]').each(function () {
             if ($(this).attr('data-end-date') == linker) {
-                dateEnd = jvdToDate($(this).val());
+                dateEnd = jvdate.todate($(this).val());
                 if (dateEnd != "Invalid Date") {
                     $(this).valid();
                 }
@@ -175,7 +174,7 @@ function jvdBind() {
         var linker = $(this).attr('data-end-date');
         $('input[data-start-date]').each(function () {
             if ($(this).attr('data-start-date') == linker) {
-                dateStart = jvdToDate($(this).val());
+                dateStart = jvdate.todate($(this).val());
                 if (dateStart != "Invalid Date") {
                     $(this).valid();
                 }
@@ -188,10 +187,10 @@ function jvdBind() {
 
     //Validate current date
     jQuery.validator.addMethod("isCurrent", function (value, element) {
-        if ( ($(element).attr('data-past-date') != undefined) || ($(element).attr('data-future-date') != undefined) ) {
+        if (($(element).attr('data-past-date') != undefined) || ($(element).attr('data-future-date') != undefined)) {
             return true;
         } else {
-            var date = (jvdToDate($(element).val()));
+            var date = (jvdate.todate($(element).val()));
             var now = (new Date());
             if (date == now) {
                 return true;
@@ -201,8 +200,8 @@ function jvdBind() {
         }
 
     }, "Please enter a valid current date.");
-    $("input[data-current-date]").each(function(){
-        $(this).rules( "add", {
+    $("input[data-current-date]").each(function () {
+        $(this).rules("add", {
             isCurrent: true
         });
     });
@@ -210,15 +209,15 @@ function jvdBind() {
     //Validate past date
     jQuery.validator.addMethod("inPast", function (value, element) {
         var now = (new Date());
-        var date = (jvdToDate($(element).val()));
-        if ( ((date == now) && ($(element).attr('data-current-date') != undefined)) || (date < now) ) {
+        var date = (jvdate.todate($(element).val()));
+        if (((date == now) && ($(element).attr('data-current-date') != undefined)) || (date < now)) {
             return true;
         } else {
             return false;
         }
     }, "Please enter a valid past date.");
-    $("input[data-past-date]").each(function(){
-        $(this).rules( "add", {
+    $("input[data-past-date]").each(function () {
+        $(this).rules("add", {
             inPast: true
         });
     });
@@ -226,27 +225,27 @@ function jvdBind() {
     //Validate future date
     jQuery.validator.addMethod("inFuture", function (value, element) {
         var now = (new Date());
-        var date = (jvdToDate($(element).val()));
-        if ( ((date == now) && ($(element).attr('data-current-date') != undefined)) || (date > now) ) {
+        var date = (jvdate.todate($(element).val()));
+        if (((date == now) && ($(element).attr('data-current-date') != undefined)) || (date > now)) {
             return true;
         } else {
             return false;
         }
     }, "Please enter a valid future date.");
-    $("input[data-future-date]").each(function(){
-        $(this).rules( "add", {
+    $("input[data-future-date]").each(function () {
+        $(this).rules("add", {
             inFuture: true
         });
     });
 
     //Validate past/future date when changed
     $('body').on('change keyup', 'input[data-future-date]', function () {
-        if (jvdToDate($(this).val()) != "Invalid Date") {
+        if (jvdate.todate($(this).val()) != "Invalid Date") {
             $(this).valid();
         }
     });
     $('body').on('change keyup', 'input[data-end-date]', function () {
-        if (jvdToDate($(this).val()) != "Invalid Date") {
+        if (jvdate.todate($(this).val()) != "Invalid Date") {
             $(this).valid();
         }
     });
@@ -254,20 +253,20 @@ function jvdBind() {
     //Validate max date
     jQuery.validator.addMethod("beforeOrAtMax", function (value, element) {
         var _maxDate = "";
-        if (jvdToDate(element.getAttribute('data-max-date')) != "Invalid Date" ) {
-            _maxDate = jvdToDate(element.getAttribute('data-max-date'));
+        if (jvdate.todate(element.getAttribute('data-max-date')) != "Invalid Date") {
+            _maxDate = jvdate.todate(element.getAttribute('data-max-date'));
         } else {
             return true;
         }
-        var date = jvdToDate($(element).val());
-        if (date <= _maxDate ) {
+        var date = jvdate.todate($(element).val());
+        if (date <= _maxDate) {
             return true;
         } else {
             return false;
         }
     }, "Please enter a date on or before the maximum date.");
-    $("input[data-max-date]").each(function() {
-        $(this).rules( "add", {
+    $("input[data-max-date]").each(function () {
+        $(this).rules("add", {
             beforeOrAtMax: true
         });
     });
@@ -275,27 +274,21 @@ function jvdBind() {
     //Validate min date
     jQuery.validator.addMethod("afterOrAtMin", function (value, element) {
         var _minDate = "";
-        if (jvdToDate(element.getAttribute('data-min-date')) != "Invalid Date" ) {
-            _minDate = jvdToDate(element.getAttribute('data-min-date'));
+        if (jvdate.todate(element.getAttribute('data-min-date')) != "Invalid Date") {
+            _minDate = jvdate.todate(element.getAttribute('data-min-date'));
         } else {
             return true;
         }
-        var date = jvdToDate($(element).val());
-        if (date >= _minDate ) {
+        var date = jvdate.todate($(element).val());
+        if (date >= _minDate) {
             return true;
         } else {
             return false;
         }
     }, "Please enter a date on or after the minimum date.");
-    $("input[data-min-date]").each(function() {
-        $(this).rules( "add", {
+    $("input[data-min-date]").each(function () {
+        $(this).rules("add", {
             afterOrAtMin: true
         });
     });
-
-}
-
-
-$(document).ready(function () {
-    jvdBind();
-});
+};
