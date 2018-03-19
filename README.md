@@ -19,11 +19,6 @@ The date validators are not automatically bound by default. After the jQuery Val
 jvdate.bind();
 ```
 
-This plugin assumes by default that you are going to be using your own initialization of the jQuery Validation plugin. However, if you would like to perform a generic initialization, you can do so with the following. This will also bind the date validators.
-```javascript
-jvdate.initvalidator();
-```
-
 --
 
 #### Options:
