@@ -209,7 +209,7 @@ jvdate.bind = function () {
         }
 
         var messenger = function () {
-            return "Please enter a date on or before " + _maxDate + ".";
+            return "Please enter a date on or before " + element.getAttribute('data-max-date') + ".";
         };
 
         var date = jvdate.todate($(element).val());
@@ -235,7 +235,7 @@ jvdate.bind = function () {
         }
 
         var messenger = function () {
-            return "Please enter a date on or after " + _minDate + ".";
+            return "Please enter a date on or after " + element.getAttribute('data-min-date') + ".";
         };
 
         var date = jvdate.todate($(element).val());
