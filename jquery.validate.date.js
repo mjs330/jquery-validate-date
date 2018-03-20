@@ -200,19 +200,25 @@ jvdate.bind = function () {
 
     //Validate max date
     jQuery.validator.addMethod("beforeOrAtMax", function (value, element) {
+
         var _maxDate = "";
         if (jvdate.todate(element.getAttribute('data-max-date')) != "Invalid Date") {
             _maxDate = jvdate.todate(element.getAttribute('data-max-date'));
         } else {
             return true;
         }
+
+        var messenger = function () {
+            return "Please enter a date on or before " + _maxDate + ".";
+        };
+
         var date = jvdate.todate($(element).val());
         if (date <= _maxDate) {
             return true;
         } else {
             return false;
         }
-    }, "Please enter a date on or before the maximum date.");
+    }, messenger);
     $("input[data-max-date]").each(function () {
         $(this).rules("add", {
             beforeOrAtMax: true
@@ -227,13 +233,18 @@ jvdate.bind = function () {
         } else {
             return true;
         }
+
+        var messenger = function () {
+            return "Please enter a date on or after " + _minDate + ".";
+        };
+
         var date = jvdate.todate($(element).val());
         if (date >= _minDate) {
             return true;
         } else {
             return false;
         }
-    }, "Please enter a date on or after the minimum date.");
+    }, messenger());
     $("input[data-min-date]").each(function () {
         $(this).rules("add", {
             afterOrAtMin: true
