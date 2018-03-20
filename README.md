@@ -45,11 +45,3 @@ The date splitter used in both the format() method and in the dates being verifi
 <!--Use the value in data-max-date to set the maximum date-->
 <input id="Before_Or_At_Max_Date" data-max-date="01/01/2025">
 ```
-
---
-
-#### Example combination uses:
-```html
-<!--Validate that a date is either the current date or in the past-->
-<input id="Current_Or_Past_Date" data-current-date data-past-date>
-```
