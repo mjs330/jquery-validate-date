@@ -1,8 +1,6 @@
 # jquery.validate.date
 jquery.validate.date is a lightweight library that uses HTML5 data attributes to:
  * Validate a start date and an end date in a set of two dates
- * Validate that a date is in the past or future
- * Validate whether or not a date is the current date
  * Validate that a date adheres to a minimum or maximum date
  
 --
@@ -39,16 +37,6 @@ The date splitter used in both the format() method and in the dates being verifi
 <input id="Start_Date" data-start-date="123">
 <input id="End_Date" data-end-date="123">
 
-<!--Validate that a date is in the future-->
-<input id="Future_Date" data-future-date>
-
-<!--Validate that a date is in the past-->
-<input id="Past_Date" data-past-date>
-
-<!--Validate that a date is the current date-->
-<input id="Current_Date" data-current-date>
-
-
 <!--Validate that a date is at or after a minimum date-->
 <!--Use the value in data-min-date to set the minimum date-->
 <input id="After_Or_At_Min_Date" data-min-date="01/01/2000">
@@ -64,9 +52,4 @@ The date splitter used in both the format() method and in the dates being verifi
 ```html
 <!--Validate that a date is either the current date or in the past-->
 <input id="Current_Or_Past_Date" data-current-date data-past-date>
-
-<!--Validate that a start date in a date range is either the current date or in the future-->
-<!--Validate that the end date in the same date range is in the future-->
-<input id="Current_Or_Future_Start_Date" data-current-date data-future-date data-start-date="456">
-<input id="Future_End_Date" data-future-date data-start-date="456">
 ```
