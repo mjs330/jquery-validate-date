@@ -208,17 +208,13 @@ jvdate.bind = function () {
             return true;
         }
 
-        var messenger = function () {
-            return "Please enter a date on or before " + element.getAttribute('data-max-date') + ".";
-        };
-
         var date = jvdate.todate($(element).val());
         if (date <= _maxDate) {
             return true;
         } else {
             return false;
         }
-    }, messenger);
+    }, "Please enter a date on or before the maximum date.");
     $("input[data-max-date]").each(function () {
         $(this).rules("add", {
             beforeOrAtMax: true
@@ -234,17 +230,13 @@ jvdate.bind = function () {
             return true;
         }
 
-        var messenger = function () {
-            return "Please enter a date on or after " + element.getAttribute('data-min-date') + ".";
-        };
-
         var date = jvdate.todate($(element).val());
         if (date >= _minDate) {
             return true;
         } else {
             return false;
         }
-    }, messenger());
+    }, "Please enter a date on or after the minimum date.");
     $("input[data-min-date]").each(function () {
         $(this).rules("add", {
             afterOrAtMin: true
