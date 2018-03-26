@@ -135,72 +135,95 @@ jvdate.bind = function () {
         }
     }, "Please enter a valid date range.");
     $("input[data-start-date]").each(function () {
-        $(this).rules("add", {
-            ranged: true
-        });
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                ranged: true
+            });
+        }
+
     });
     $("input[data-end-date]").each(function () {
-        $(this).rules("add", {
-            ranged: true
-        });
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                ranged: true
+            });
+        }
     });
 
     ////Validate current date
     //jQuery.validator.addMethod("isCurrent", function (value, element) {
-    //    if (typeof ($(element).data('past-date') != 'undefined') || typeof ($(element).data('future-date') != 'undefined')) {
+    //    if (typeof ($(element).data('past-date')) != 'undefined' || typeof ($(element).data('future-date')) != 'undefined'
+    //        || typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
+    //        || typeof ($(element).data('past-date')) != 'undefined' || typeof ($(element).data('future-date')) != 'undefined') {
     //        return true;
     //    } else {
-    //        var date = (jvdate.todate($(element).val()));
+    //        var date = (jvdate.todate(value));
     //        var now = (new Date()).setHours(0, 0, 0, 0);
     //        if (date == now) {
     //            return true;
     //        } else {
+    //            console.log(date + ' ' + now);
     //            return false;
     //        }
     //    }
 
     //}, "Please enter a valid current date.");
     //$("input[data-current-date]").each(function () {
-    //    $(this).rules("add", {
-    //        isCurrent: true
-    //    });
+    //    console.log($(this));
+    //    if (typeof $(this) != 'undefined') {
+    //        $(this).rules("add", {
+    //            isCurrent: true
+    //        });
+    //    }
     //});
 
-    ////Validate past date
-    //jQuery.validator.addMethod("inPast", function (value, element) {
-    //    var now = (new Date()).setHours(0, 0, 0, 0);
-    //    var date = (jvdate.todate($(element).val()));
-    //    if (((date == now) && typeof ($(element).data('current-date') != undefined)) || (date < now)) {
-    //        return true;
-    //    } else {
-    //        return false;
-    //    }
-    //}, "Please enter a valid past date.");
-    //$("input[data-past-date]").each(function () {
-    //    $(this).rules("add", {
-    //        inPast: true
-    //    });
-    //});
+    //Validate past date
+    jQuery.validator.addMethod("inPast", function (value, element) {
+        var now = (new Date()).setHours(0, 0, 0, 0);
+        var date = (jvdate.todate(value));
+        if (((date == now) && typeof ($(element).data('current-date')) != undefined) || (date < now)
+            || typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
+            || typeof ($(element).data('future-date')) != 'undefined') {
+            return true;
+        } else {
+            console.log(date + ' ' + now);
+            return false;
+        }
+    }, "Please enter a valid past date.");
+    $("input[data-past-date]").each(function () {
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                inPast: true
+            });
+        }
+    });
 
-    ////Validate future date
-    //jQuery.validator.addMethod("inFuture", function (value, element) {
-    //    var now = (new Date()).setHours(0, 0, 0, 0);
-    //    var date = (jvdate.todate($(element).val()));
-    //    if (((date == now) && typeof ($(element).data('current-date') != undefined)) || (date > now)) {
-    //        return true;
-    //    } else {
-    //        return false;
-    //    }
-    //}, "Please enter a valid future date.");
-    //$("input[data-future-date]").each(function () {
-    //    $(this).rules("add", {
-    //        inFuture: true
-    //    });
-    //});
+    //Validate future date
+    jQuery.validator.addMethod("inFuture", function (value, element) {
+        var now = (new Date()).setHours(0, 0, 0, 0);
+        var date = (jvdate.todate(value));
+        if (((date == now) && typeof ($(element).data('current-date')) != undefined) || (date > now)
+        || typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
+        || typeof ($(element).data('past-date')) != 'undefined') {
+            return true;
+        } else {
+            console.log(date + ' ' + now);
+            return false;
+        }
+    }, "Please enter a valid future date.");
+    $("input[data-future-date]").each(function () {
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                inFuture: true
+            });
+        }
+    });
 
     //Validate max date
     jQuery.validator.addMethod("beforeOrAtMax", function (value, element) {
-
+        if (typeof ($(element).data('past-date')) != 'undefined' || typeof ($(element).data('future-date')) != 'undefined') {
+            return true;
+        }
         var _maxDate = "";
         if (jvdate.todate(element.getAttribute('data-max-date')) != "Invalid Date") {
             _maxDate = jvdate.todate(element.getAttribute('data-max-date'));
@@ -208,7 +231,7 @@ jvdate.bind = function () {
             return true;
         }
 
-        var date = jvdate.todate($(element).val());
+        var date = jvdate.todate(value);
         if (date <= _maxDate) {
             return true;
         } else {
@@ -216,13 +239,18 @@ jvdate.bind = function () {
         }
     }, "Please enter a date on or before the maximum date.");
     $("input[data-max-date]").each(function () {
-        $(this).rules("add", {
-            beforeOrAtMax: true
-        });
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                beforeOrAtMax: true
+            });
+        }
     });
 
     //Validate min date
     jQuery.validator.addMethod("afterOrAtMin", function (value, element) {
+        if (typeof ($(element).data('past-date')) != 'undefined' || typeof ($(element).data('future-date')) != 'undefined') {
+            return true;
+        }
         var _minDate = "";
         if (jvdate.todate(element.getAttribute('data-min-date')) != "Invalid Date") {
             _minDate = jvdate.todate(element.getAttribute('data-min-date'));
@@ -230,7 +258,7 @@ jvdate.bind = function () {
             return true;
         }
 
-        var date = jvdate.todate($(element).val());
+        var date = jvdate.todate(value);
         if (date >= _minDate) {
             return true;
         } else {
@@ -238,25 +266,27 @@ jvdate.bind = function () {
         }
     }, "Please enter a date on or after the minimum date.");
     $("input[data-min-date]").each(function () {
-        $(this).rules("add", {
-            afterOrAtMin: true
-        });
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                afterOrAtMin: true
+            });
+        }
     });
 
 
     //Validate on change
     if (jvdate.onchange == true) {
-        ////Validate past/future date when changed
-        //$('body').on('change keyup', 'input[data-future-date]', function () {
-        //    if (jvdate.todate($(this).val()) != "Invalid Date") {
-        //        $(this).valid();
-        //    }
-        //});
-        //$('body').on('change keyup', 'input[data-past-date]', function () {
-        //    if (jvdate.todate($(this).val()) != "Invalid Date") {
-        //        $(this).valid();
-        //    }
-        //});
+        //Validate past/future date when changed
+        $('body').on('change keyup', 'input[data-future-date]', function () {
+            if (jvdate.todate($(this).val()) != "Invalid Date") {
+                $(this).valid();
+            }
+        });
+        $('body').on('change keyup', 'input[data-past-date]', function () {
+            if (jvdate.todate($(this).val()) != "Invalid Date") {
+                $(this).valid();
+            }
+        });
 
         //Validate start/end date when date range is changed
         $('body').on('change keyup', 'input[data-start-date]', function () {

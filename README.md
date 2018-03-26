@@ -37,6 +37,12 @@ The date splitter used in both the format() method and in the dates being verifi
 <input id="Start_Date" data-start-date="123">
 <input id="End_Date" data-end-date="123">
 
+<!--Validate that a date is in the future-->
+<input id="Future_Date" data-future-date>
+
+<!--Validate that a date is in the past-->
+<input id="Past_Date" data-past-date>
+
 <!--Validate that a date is at or after a minimum date-->
 <!--Use the value in data-min-date to set the minimum date-->
 <input id="After_Or_At_Min_Date" data-min-date="01/01/2000">
