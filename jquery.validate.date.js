@@ -150,6 +150,141 @@ jvdate.bind = function () {
         }
     });
 
+    //Validate date range max length
+    jQuery.validator.addMethod("rangemax", function (value, element) {
+        var dateEnd = jvdate.todate(value);
+        var dateStart = dateEnd;
+        var linked = null;
+        //Get range
+        var range = element.getAttribute('data-max-date-range');
+        //Check for end date attr
+        var linker = element.getAttribute('data-end-date');
+        if (linker == null) {
+            //Check for start date attr
+            linker = element.getAttribute('data-start-date');
+            if (linker == null) {
+                return true;
+            } else {
+                //Handle start date attr
+                var flag = false;
+                $('input[data-end-date]').each(function () {
+                    if ($(this).data('end-date') == linker) {
+                        dateEnd = jvdate.todate($(this).val());
+                        linked = this;
+                        if (linked.getAttribute('data-max-date-range') != range && linked.getAttribute('data-max-date-range') != null)
+                            flag = true;
+                    }
+                });
+                if (flag || isNaN(parseInt(range))) {
+                    return true;
+                } else if (Math.round(Math.abs((dateStart - dateEnd) / (24 * 60 * 60 * 1000))) > parseInt(range)) {
+                    return false;
+                } else {
+                    if ($(linked).hasClass('error')) {
+                        $(linked).removeClass('error')
+                    }
+                    return true;
+                }
+            }
+        } else {
+            //Handle end date attr
+            var flag = false;
+            $('input[data-start-date]').each(function () {
+                if ($(this).data('start-date') == linker) {
+                    dateStart = jvdate.todate($(this).val());
+                    linked = this;
+                    if (linked.getAttribute('data-max-date-range') != range && linked.getAttribute('data-max-date-range') != null)
+                        flag = true;
+                }
+            });
+            if (flag || isNaN(parseInt(range))) {
+                return true;
+            } else if (Math.round(Math.abs((dateStart - dateEnd) / (24 * 60 * 60 * 1000))) > parseInt(range)) {
+                return false;
+            } else {
+                if ($(linked).hasClass('error')) {
+                    $(linked).removeClass('error')
+                }
+                return true;
+            }
+        }
+    }, "Please enter a date range less than the maximum.");
+    $("input[data-max-date-range]").each(function () {
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                rangemax: true
+            });
+        }
+    });
+
+
+    //Validate date range min length
+    jQuery.validator.addMethod("rangemin", function (value, element) {
+        var dateEnd = jvdate.todate(value);
+        var dateStart = dateEnd;
+        var linked = null;
+        //Get range
+        var range = element.getAttribute('data-min-date-range');
+        //Check for end date attr
+        var linker = element.getAttribute('data-end-date');
+        if (linker == null) {
+            //Check for start date attr
+            linker = element.getAttribute('data-start-date');
+            if (linker == null) {
+                return true;
+            } else {
+                //Handle start date attr
+                var flag = false;
+                $('input[data-end-date]').each(function () {
+                    if ($(this).data('end-date') == linker) {
+                        dateEnd = jvdate.todate($(this).val());
+                        linked = this;
+                        if (linked.getAttribute('data-min-date-range') != range && linked.getAttribute('data-min-date-range') != null)
+                            flag = true;
+                    }
+                });
+                if (flag || isNaN(parseInt(range))) {
+                    return true;
+                } else if (Math.round(Math.abs((dateStart - dateEnd) / (24 * 60 * 60 * 1000))) < parseInt(range)) {
+                    return false;
+                } else {
+                    if ($(linked).hasClass('error')) {
+                        $(linked).removeClass('error')
+                    }
+                    return true;
+                }
+            }
+        } else {
+            //Handle end date attr
+            var flag = false;
+            $('input[data-start-date]').each(function () {
+                if ($(this).data('start-date') == linker) {
+                    dateStart = jvdate.todate($(this).val());
+                    linked = this;
+                    if (linked.getAttribute('data-min-date-range') != range && linked.getAttribute('data-min-date-range') != null)
+                        flag = true;
+                }
+            });
+            if (flag || isNaN(parseInt(range))) {
+                return true;
+            } else if (Math.round(Math.abs((dateStart - dateEnd) / (24 * 60 * 60 * 1000))) < parseInt(range)) {
+                return false;
+            } else {
+                if ($(linked).hasClass('error')) {
+                    $(linked).removeClass('error')
+                }
+                return true;
+            }
+        }
+    }, "Please enter a date range greater than the minimum.");
+    $("input[data-min-date-range]").each(function () {
+        if (typeof $(this) != 'undefined') {
+            $(this).rules("add", {
+                rangemin: true
+            });
+        }
+    });
+
     ////Validate current date
     //jQuery.validator.addMethod("isCurrent", function (value, element) {
     //    if (typeof ($(element).data('past-date')) != 'undefined' || typeof ($(element).data('future-date')) != 'undefined'

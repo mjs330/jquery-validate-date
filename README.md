@@ -33,8 +33,20 @@ The date splitter used in both the format() method and in the dates being verifi
 #### Example uses:
 ```html
 <!--Validate a date range-->
-<!--Use the same value in data-start-date and data-end-date to link the inputs-->
+<!--Use the same arbitrary value in data-start-date and data-end-date to link the inputs-->
 <input id="Start_Date" data-start-date="123">
+<input id="End_Date" data-end-date="123">
+
+<!--Validate a date range maximum (in days)-->
+<!--Use the same arbitrary value in data-start-date and data-end-date to link the inputs then put a maximum range in days in data-max-date-range-->
+<!--A value for data-max-date-range may be put in either or both inputs. When putting the value in both inputs, the value must be the same-->
+<input id="Start_Date" data-start-date="123" data-max-date-range="20">
+<input id="End_Date" data-end-date="123">
+
+<!--Validate a date range minimum (in days)-->
+<!--Use the same arbitrary value in data-start-date and data-end-date to link the inputs then put a minimum range in days in data-min-date-range-->
+<!--A value for data-min-date-range may be put in either or both inputs. When putting the value in both inputs, the value must be the same-->
+<input id="Start_Date" data-start-date="123" data-min-date-range="10">
 <input id="End_Date" data-end-date="123">
 
 <!--Validate that a date is in the future-->
