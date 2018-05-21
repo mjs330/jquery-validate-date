@@ -2,6 +2,7 @@
 jquery.validate.date is a lightweight library that uses HTML5 data attributes to:
  * Validate a start date and an end date in a set of two dates
  * Validate that a date adheres to a minimum or maximum date
+ * Validate that a date is in the future or in the past
  
 --
 
