@@ -317,14 +317,13 @@ jvdate.bind = function () {
         var now = (new Date()).setHours(0, 0, 0, 0);
         var date = (jvdate.todate(value));
         if (((date == now) && typeof ($(element).data('current-date')) != undefined) || (date < now)
-            || typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
+            //|| typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
             || typeof ($(element).data('future-date')) != 'undefined') {
             return true;
         } else {
-            console.log(date + ' ' + now);
             return false;
         }
-    }, "Please enter a valid past date.");
+    }, "Please enter a date in the past.");
     $("input[data-past-date]").each(function () {
         if (typeof $(this) != 'undefined') {
             $(this).rules("add", {
@@ -338,14 +337,13 @@ jvdate.bind = function () {
         var now = (new Date()).setHours(0, 0, 0, 0);
         var date = (jvdate.todate(value));
         if (((date == now) && typeof ($(element).data('current-date')) != undefined) || (date > now)
-        || typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
+        //|| typeof ($(element).data('start-date')) != 'undefined' || typeof ($(element).data('end-date')) != 'undefined'
         || typeof ($(element).data('past-date')) != 'undefined') {
             return true;
         } else {
-            console.log(date + ' ' + now);
             return false;
         }
-    }, "Please enter a valid future date.");
+    }, "Please enter a date in the future.");
     $("input[data-future-date]").each(function () {
         if (typeof $(this) != 'undefined') {
             $(this).rules("add", {
@@ -457,7 +455,7 @@ jvdate.bind = function () {
     } else {
         $('body').on('change keyup', 'input[data-future-date]', function () {
         });
-        $('body').on('change keyup', 'input[data-end-date]', function () {
+        $('body').on('change keyup', 'input[data-past-date]', function () {
         });
         $('body').on('change keyup', 'input[data-start-date]', function () {
         });
